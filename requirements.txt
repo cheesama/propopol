@@ -1,0 +1,4 @@
+fbprophet
+pandas-datareader
+backtrader
+tqdm
