@@ -2,3 +2,5 @@ fbprophet
 pandas-datareader
 backtrader
 tqdm
+kaleido
+plotly>=4.9.0
