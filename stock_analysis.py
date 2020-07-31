@@ -88,13 +88,14 @@ import plotly
 start = datetime(2018,1,1)
 end = datetime.date(datetime.now())
 
-for i in notebook.tqdm(range(len(code_df))):
+#for i in notebook.tqdm(range(len(code_df))):
+for i in tqdm(range(len(code_df))):
     try:
         # get_data_yahoo API를 통해서 yahho finance의 주식 종목 데이터를 가져온다.
         df = pdr.get_data_yahoo(code_df.iloc[i]['code'], start, end).rename(columns={"Close":"y"})
         df['ds'] = df.index
         
-        analysis_corp_stock(df, target_folder, code_df.iloc[i]['name'], code_df.iloc[i]['code'])
+        Process(target=analysis_corp_stock, args=(df, target_folder, code_df.iloc[i]['name'], code_df.iloc[i]['code'])).start()
 
     except Exception as ex:
         #print (ex)
