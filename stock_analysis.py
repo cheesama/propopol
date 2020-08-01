@@ -99,7 +99,7 @@ for i in tqdm(range(len(code_df))):
         Process(target=analysis_corp_stock, args=(df, target_folder, code_df.iloc[i]['name'], code_df.iloc[i]['code'])).start()
 
     except Exception as ex:
-        print (ex)
+        #print (ex)
         pass
 
 #from google.colab import drive
