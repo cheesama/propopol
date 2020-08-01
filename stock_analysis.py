@@ -63,20 +63,21 @@ print("Number of cpu : ", multiprocessing.cpu_count())
 pool = Pool(multiprocessing.cpu_count())
 #pool = Pool(1)
 
+#save all prediction result -> { file_name: prediction_low_bound - actual final close price}
+predictions = {}
+
 def analysis_corp_stock(df, target_folder, name, code):
     m = Prophet(daily_seasonality=True, yearly_seasonality=True)
+    m.fit(df)
+    future = m.make_future_dataframe(periods=7)
+    forecast = m.predict(future)
+    fig = plot_plotly(m, forecast, xlabel=name + '(' + code + ')', figsize=(1200, 600))  # This returns a plotly Figure
+    #fig.show()
+    fig.write_image(target_folder + os.sep + name + '(' + code + ').png')
+    print (f"{name}({code}).png saved!\tvalue : {forecast.iloc[-1]['yhat_lower'] - df.iloc[-1]['y']}")
 
-    try:
-        m.fit(df)
-        future = m.make_future_dataframe(periods=7)
-        forecast = m.predict(future)
-        fig = plot_plotly(m, forecast, xlabel=name + '(' + code + ')', figsize=(1200, 600))  # This returns a plotly Figure
-        #fig.show()
-        fig.write_image(target_folder + os.sep + name + '(' + code + ').png')
-        print (name + '(' + code + ').png saved!')
-    except Exception as ex:
-        #print (ex)
-        pass
+    predictions[target_folder + os.sep + name + '(' + code + ').png'] = forecast.iloc[-1]['yhat_lower'] - df.iloc[-1]['y']
+
 
 from fbprophet.plot import plot_plotly
 
@@ -88,16 +89,17 @@ import plotly
 start = datetime(2018,1,1)
 end = datetime.date(datetime.now())
 
-for i in notebook.tqdm(range(len(code_df))):
+#for i in notebook.tqdm(range(len(code_df))):
+for i in tqdm(range(len(code_df))):
     try:
         # get_data_yahoo API를 통해서 yahho finance의 주식 종목 데이터를 가져온다.
         df = pdr.get_data_yahoo(code_df.iloc[i]['code'], start, end).rename(columns={"Close":"y"})
         df['ds'] = df.index
         
-        analysis_corp_stock(df, target_folder, code_df.iloc[i]['name'], code_df.iloc[i]['code'])
+        Process(target=analysis_corp_stock, args=(df, target_folder, code_df.iloc[i]['name'], code_df.iloc[i]['code'])).start()
 
     except Exception as ex:
-        #print (ex)
+        print (ex)
         pass
 
 #from google.colab import drive
