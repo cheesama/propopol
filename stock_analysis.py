@@ -106,9 +106,9 @@ for i in tqdm(range(len(code_df))):
 predictions = {k: v for k, v in sorted(predictions.items(), key=lambda item: item[1], reverst=True)}
 
 #print top-k results
-top-k = 5
+top_k = 5
 for i, (k, v) in enumerate(predictions.items()):
-    if i > top-k: break
+    if i > top_k: break
     print (f"corp: {k} = result: {v}")
 
 
