@@ -103,7 +103,7 @@ for i in tqdm(range(len(code_df))):
         pass
 
 #pick several positive corp prediction results
-predictions = {k: v for k, v in sorted(predictions.items(), key=lambda item: item[1], reverst=True)}
+predictions = {k: v for k, v in sorted(predictions.items(), key=lambda item: item[1], reverse=True)}
 
 #print top-k results
 top_k = 5
