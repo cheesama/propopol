@@ -16,6 +16,7 @@ def get_code(df, name):
     code = code.strip()
     return code
 
+
 # download url 조합
 def get_download_stock(market_type=None):
     market_type = stock_type[market_type]
@@ -25,17 +26,20 @@ def get_download_stock(market_type=None):
     df = pd.read_html(download_link, header=0)[0]
     return df
 
+
 # kospi 종목코드 목록 다운로드
 def get_download_kospi():
     df = get_download_stock("kospi")
     df.종목코드 = df.종목코드.map("{:06d}.KS".format)
     return df
 
+
 # kosdaq 종목코드 목록 다운로드
 def get_download_kosdaq():
     df = get_download_stock("kosdaq")
     df.종목코드 = df.종목코드.map("{:06d}.KQ".format)
     return df
+
 
 # kospi, kosdaq 종목코드 각각 다운로드
 kospi_df = get_download_kospi()
@@ -52,8 +56,8 @@ code_df = code_df.rename(columns={"회사명": "name", "종목코드": "code"})
 
 import os, sys
 
-target_folder = datetime.now().strftime('%Y_%m_%d') + '_stock_analysis'
-os.makedirs(datetime.now().strftime('%Y_%m_%d') + '_stock_analysis', exist_ok=True)
+target_folder = datetime.now().strftime("%Y_%m_%d") + "_stock_analysis"
+os.makedirs(datetime.now().strftime("%Y_%m_%d") + "_stock_analysis", exist_ok=True)
 
 from multiprocessing import Process, Pool
 
@@ -61,9 +65,9 @@ import multiprocessing
 
 print("Number of cpu : ", multiprocessing.cpu_count())
 pool = Pool(multiprocessing.cpu_count())
-#pool = Pool(1)
+# pool = Pool(1)
 
-#save all prediction result -> { file_name: prediction_low_bound - actual final close price}
+# save all prediction result -> { file_name: prediction_low_bound - actual final close price}
 predictions = {}
 
 from fbprophet.plot import plot_plotly
@@ -71,46 +75,56 @@ from fbprophet.plot import plot_plotly
 import plotly.offline as py
 import plotly
 
-#plotly.io.renderers.default = 'colab'
+# plotly.io.renderers.default = 'colab'
 
-start = datetime(2018,1,1)
+start = datetime(2018, 1, 1)
 end = datetime.date(datetime.now())
 
-#for i in notebook.tqdm(range(len(code_df))):
+# for i in notebook.tqdm(range(len(code_df))):
 for i in tqdm(range(len(code_df))):
     try:
         # get_data_yahoo API를 통해서 yahho finance의 주식 종목 데이터를 가져온다.
-        df = pdr.get_data_yahoo(code_df.iloc[i]['code'], start, end).rename(columns={"Close":"y"})
-        df['ds'] = df.index
+        df = pdr.get_data_yahoo(code_df.iloc[i]["code"], start, end).rename(
+            columns={"Close": "y"}
+        )
+        df["ds"] = df.index
 
-	name = code_df.iloc[i]['name']
-        code = code_df.iloc[i]['code']
+        name = code_df.iloc[i]["name"]
+        code = code_df.iloc[i]["code"]
 
         m = Prophet(daily_seasonality=True, yearly_seasonality=True)
         m.fit(df)
         future = m.make_future_dataframe(periods=7)
         forecast = m.predict(future)
-        fig = plot_plotly(m, forecast, xlabel=name + '(' + code + ')', figsize=(1200, 600))  # This returns a plotly Figure
-        #fig.show()
-        fig.write_image(target_folder + os.sep + name + '(' + code + ').png')
+        fig = plot_plotly(
+            m, forecast, xlabel=name + "(" + code + ")", figsize=(1200, 600)
+        )  # This returns a plotly Figure
+        # fig.show()
+        fig.write_image(target_folder + os.sep + name + "(" + code + ").png")
 
-        predictions[target_folder + os.sep + name + '(' + code + ').png'] = forecast.iloc[-1]['yhat_lower'] - df.iloc[-1]['y']
+        predictions[target_folder + os.sep + name + "(" + code + ").png"] = (
+            forecast.iloc[-1]["yhat_lower"] - df.iloc[-1]["y"]
+        )
 
-        print (f"\n{name}({code}).png saved!\tvalue : {forecast.iloc[-1]['yhat_lower'] - df.iloc[-1]['y']}")
-        
+        print(
+            f"\n{name}({code}).png saved!\tvalue : {forecast.iloc[-1]['yhat_lower'] - df.iloc[-1]['y']}"
+        )
 
     except Exception as ex:
-        #print (ex)
+        # print (ex)
         pass
 
-#pick several positive corp prediction results
-predictions = {k: v for k, v in sorted(predictions.items(), key=lambda item: item[1], reverse=True)}
+# pick several positive corp prediction results
+predictions = {
+    k: v for k, v in sorted(predictions.items(), key=lambda item: item[1], reverse=True)
+}
 
-#print top-k results
+# print top-k results
 top_k = 5
 for i, (k, v) in enumerate(predictions.items()):
-    if i > top_k: break
-    print (f"corp: {k} = result: {v}")
+    if i > top_k:
+        break
+    print(f"corp: {k} = result: {v}")
 
-#from google.colab import drive
-#drive.mount('/content/drive')
+# from google.colab import drive
+# drive.mount('/content/drive')
