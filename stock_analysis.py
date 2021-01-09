@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from tqdm import tqdm, notebook
 from datetime import datetime, date
-from fbprophet import Prophet
 
 import pandas as pd
 import pandas_datareader as pdr
@@ -70,7 +69,7 @@ pool = Pool(multiprocessing.cpu_count())
 # save all prediction result -> { file_name: prediction_low_bound - actual final close price}
 predictions = {}
 
-from fbprophet.plot import plot_plotly
+from neuralprophet import NeuralProphet
 
 import plotly.offline as py
 import plotly
@@ -92,14 +91,14 @@ for i in tqdm(range(len(code_df))):
         name = code_df.iloc[i]["name"]
         code = code_df.iloc[i]["code"]
 
-        m = Prophet(daily_seasonality=True, yearly_seasonality=True)
-        m.fit(df)
-        future = m.make_future_dataframe(periods=7)
+        model = NeuralProphet()
+        metrics = model.fit(df, validate_each_epoch=True, freq="D")
+        future = model.make_future_dataframe(df, periods=7, n_historic_predictions=len(df)) 
         forecast = m.predict(future)
-        fig = plot_plotly(
-            m, forecast, xlabel=name + "(" + code + ")", figsize=(1200, 600)
-        )  # This returns a plotly Figure
-        # fig.show()
+
+        fig, ax = plt.subplots(figsize=(14, 10)) 
+        model.plot(forecast, xlabel="Date", ylabel="Price", ax=ax)
+        ax.set_title(f"{name}({code})", fontsize=28, fontweight="bold")
         fig.write_image(target_folder + os.sep + name + "(" + code + ").png")
 
         predictions[target_folder + os.sep + name + "(" + code + ").png"] = (
