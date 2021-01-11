@@ -121,19 +121,12 @@ for i in tqdm(range(len(code_df))):
         m.fit(df)
         future = m.make_future_dataframe(periods=periods)
         forecast = m.predict(future)
-        fig = plot_plotly(
-            m, forecast, xlabel=name + "(" + code + ")", figsize=(1200, 600)
-        )  # This returns a plotly Figure
-        # fig.show()
-        fig.write_image(target_folder + os.sep + name + "(" + code + ").png")
+        
+        #fig = plot_plotly(m, forecast, xlabel=name + "(" + code + ")", figsize=(1200, 600))  # This returns a plotly Figure
+        #fig.write_image(target_folder + os.sep + name + "(" + code + ").png")
+        predictions[target_folder + os.sep + name + "(" + code + ").png"] = (forecast.iloc[-1]["yhat_lower"] - df.iloc[-1]["y"])
 
-        predictions[target_folder + os.sep + name + "(" + code + ").png"] = (
-            forecast.iloc[-1]["yhat_lower"] - df.iloc[-1]["y"]
-        )
-
-        print(
-            f"\n{name}({code}).png saved!\tvalue : {forecast.iloc[-1]['yhat_lower'] - df.iloc[-1]['y']}"
-        )
+        print(f"\n{name}({code}).png saved!\tvalue : {forecast.iloc[-1]['yhat_lower'] - df.iloc[-1]['y']}")
 
     except Exception as ex:
         print (ex)
