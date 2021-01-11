@@ -2,11 +2,11 @@
 from tqdm import tqdm, notebook
 from datetime import datetime, date
 from fbprophet import Prophet
+from github import Github
 
 import pandas as pd
 import pandas_datareader as pdr
-
-from github import Github
+import os, sys
 
 def get_github_repo(access_token, repository_name):
     """
@@ -151,7 +151,7 @@ for i, (k, v) in enumerate(predictions.items()):
         break
     print(f"corp: {k}, \t expected profit: {v}\n")
     upload_contents += f"corp: {k}, \t expected profit: {v}\n"
-
+os.environ["UPLOAD_CONTENTS"] = upload_contents
 
 #generate result as github issue
 issue_title = f"{datetime.today().strftime('%Y-%m-%d')} stock_prediction(after {periods} days)"
