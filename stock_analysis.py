@@ -6,6 +6,30 @@ from fbprophet import Prophet
 import pandas as pd
 import pandas_datareader as pdr
 
+from github import Github
+
+def get_github_repo(access_token, repository_name):
+    """
+    github repo object를 얻는 함수
+    :param access_token: Github access token
+    :param repository_name: repo 이름
+    :return: repo object
+    """
+    g = Github(access_token)
+    repo = g.get_user().get_repo(repository_name)
+    return repo
+
+
+def upload_github_issue(repo, title, body):
+    """
+    해당 repo에 title 이름으로 issue를 생성하고, 내용을 body로 채우는 함수
+    :param repo: repo 이름
+    :param title: issue title
+    :param body: issue body
+    :return: None
+    """
+    repo.create_issue(title=title, body=body)
+
 # 종목 타입에 따라 download url이 다름. 종목코드 뒤에 .KS .KQ등이 입력되어야해서 Download Link 구분 필요
 stock_type = {"kospi": "stockMkt", "kosdaq": "kosdaqMkt"}
 
@@ -15,7 +39,6 @@ def get_code(df, name):
     # 위와같이 code명을 가져오면 앞에 공백이 붙어있는 상황이 발생하여 앞뒤로 sript() 하여 공백 제거
     code = code.strip()
     return code
-
 
 # download url 조합
 def get_download_stock(market_type=None):
@@ -75,12 +98,14 @@ from fbprophet.plot import plot_plotly
 import plotly.offline as py
 import plotly
 
-# plotly.io.renderers.default = 'colab'
 
+#prediction args
 start = datetime(2018, 1, 1)
 end = datetime.date(datetime.now())
+periods = 7
+top_k = 10
 
-# for i in notebook.tqdm(range(len(code_df))):
+#model training
 for i in tqdm(range(len(code_df))):
     try:
         # get_data_yahoo API를 통해서 yahho finance의 주식 종목 데이터를 가져온다.
@@ -94,7 +119,7 @@ for i in tqdm(range(len(code_df))):
 
         m = Prophet(daily_seasonality=True, yearly_seasonality=True)
         m.fit(df)
-        future = m.make_future_dataframe(periods=7)
+        future = m.make_future_dataframe(periods=periods)
         forecast = m.predict(future)
         fig = plot_plotly(
             m, forecast, xlabel=name + "(" + code + ")", figsize=(1200, 600)
@@ -120,11 +145,20 @@ predictions = {
 }
 
 # print top-k results
-top_k = 5
+upload_contents = f"{datetime.today().strftime('%Y-%m-%d')} stock_prediction(after {periods} days)\n\n"
 for i, (k, v) in enumerate(predictions.items()):
     if i > top_k:
         break
-    print(f"corp: {k} = result: {v}")
+    print(f"corp: {k}, \t expected profit: {v}\n")
+    upload_contents += f"corp: {k}, \t expected profit: {v}\n"
 
-# from google.colab import drive
-# drive.mount('/content/drive')
+
+#generate result as github issue
+issue_title = f"{datetime.today().strftime('%Y-%m-%d')} stock_prediction(after {periods} days)"
+access_token = os.environ['GITHUB_TOKEN']
+repository_name = "propopol"
+
+repo = get_github_repo(access_token, repository_name)
+upload_github_issue(repo, issue_title, upload_contents)
+print("Upload Github Issue Success!")
+

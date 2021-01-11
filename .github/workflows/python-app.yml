@@ -5,11 +5,12 @@ name: Stock Analysis
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ master ]
+  schedule:
+    - cron: '0 0 * * *'
   
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -25,4 +26,6 @@ jobs:
     - name: Stock Analysis
       run: |
         python stock_analysis.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
