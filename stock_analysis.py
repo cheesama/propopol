@@ -136,7 +136,7 @@ for i in tqdm(range(len(code_df))):
         )
 
     except Exception as ex:
-        # print (ex)
+        print (ex)
         pass
 
 # pick several positive corp prediction results
