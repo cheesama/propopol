@@ -36,7 +36,7 @@ jobs:
       with:
         title: Stock Prediction Result {{ date | date('dddd, MMMM Do') }}
         token: ${{secrets.GITHUB_TOKEN}}
-        body: {{ echo $UPLOAD_CONTENTS }}
+        body: ${{ echo $UPLOAD_CONTENTS }}
       
     - name: Update Stock Prediction result to README
       uses: theboi/github-update-readme@v1.0
