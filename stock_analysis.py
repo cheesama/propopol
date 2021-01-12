@@ -94,11 +94,8 @@ pool = Pool(multiprocessing.cpu_count())
 # save all prediction result -> { file_name: prediction_low_bound - actual final close price}
 predictions = {}
 
-from neuralprophet import NeuralProphet
-
 import plotly.offline as py
 import plotly
-
 
 #prediction args
 start = datetime(2018, 1, 1)
