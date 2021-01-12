@@ -69,7 +69,8 @@ kospi_df = get_download_kospi()
 kosdaq_df = get_download_kosdaq()
 
 # data frame merge
-code_df = pd.concat([kospi_df, kosdaq_df])
+#code_df = pd.concat([kospi_df, kosdaq_df])
+code_df = kospi_df
 
 # data frame정리
 code_df = code_df[["회사명", "종목코드"]]
