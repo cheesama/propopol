@@ -3,4 +3,5 @@ pandas-datareader
 backtrader
 tqdm
 kaleido
+PyGithub
 plotly>=4.9.0
