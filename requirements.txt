@@ -1,4 +1,4 @@
-neuralprophet
+fbprophet
 pandas-datareader
 backtrader
 tqdm
