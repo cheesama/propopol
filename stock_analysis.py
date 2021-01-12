@@ -69,7 +69,8 @@ kospi_df = get_download_kospi()
 kosdaq_df = get_download_kosdaq()
 
 # data frame merge
-code_df = pd.concat([kospi_df, kosdaq_df])
+#code_df = pd.concat([kospi_df, kosdaq_df])
+code_df = kospi_df
 
 # data frame정리
 code_df = code_df[["회사명", "종목코드"]]
@@ -93,7 +94,7 @@ pool = Pool(multiprocessing.cpu_count())
 # save all prediction result -> { file_name: prediction_low_bound - actual final close price}
 predictions = {}
 
-from fbprophet.plot import plot_plotly
+from neuralprophet import NeuralProphet
 
 import plotly.offline as py
 import plotly
