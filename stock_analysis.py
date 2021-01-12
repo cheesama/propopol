@@ -146,7 +146,7 @@ os.environ["UPLOAD_CONTENTS"] = upload_contents
 
 #generate result as github issue
 issue_title = f"{datetime.today().strftime('%Y-%m-%d')} stock_prediction(after {periods} days)"
-access_token = os.environ['GITHUB_TOKEN']
+access_token = os.environ['FULL_ACCESS_TOKEN']
 repository_name = "propopol"
 
 repo = get_github_repo(access_token, repository_name)

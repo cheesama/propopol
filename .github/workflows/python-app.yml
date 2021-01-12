@@ -27,5 +27,5 @@ jobs:
       run: |
         python stock_analysis.py
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        FULL_ACCESS_TOKEN: ${{ secrets.FULL_ACCESS_TOKEN }}
 
