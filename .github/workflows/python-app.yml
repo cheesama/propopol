@@ -29,21 +29,21 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - run: |
-        echo "::set-env UPLOAD_CONTENTS=UPLOAD_CONTENTS::$UPLOAD_CONTENTS"
+        echo "::set-env name=UPLOAD_CONTENTS::$UPLOAD_CONTENTS"
     - run: echo $UPLOAD_CONTENTS
     - name: Create Issue for stock prediction result
       uses: nashmaniac/create-issue-action@v1.1
       with:
-        title: Stock Prediction Result {{ date | date('dddd, MMMM Do') }}
-        token: ${{secrets.GITHUB_TOKEN}}
-        body: ${{ echo $UPLOAD_CONTENTS }}
+        title: Stock Prediction Result {{ date | date('dddd, MMMM Do') }} - after 7 days
+        token: ${{ secrets.GITHUB_TOKEN }}
+        body: ${{ env.UPLOAD_CONTENTS }}
       
     - name: Update Stock Prediction result to README
       uses: theboi/github-update-readme@v1.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        header: "Korean Stock Prediction Result"
-        subhead: "$(echo $UPLOAD_CONETENTS)"
+        header: Stock Prediction Result {{ date | date('dddd, MMMM Do') }} - after 7 days
+        subhead: ${{ env.UPLOAD_CONTENTS }}
         footer: "$(date +'%Y-%m-%d')"
 
