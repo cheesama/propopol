@@ -1,37 +1,19 @@
-## Welcome to GitHub Pages
+## Stock Prediction Result {{ date | date('dddd, MMMM Do') }} - after 7 days
 
-You can use the [editor on GitHub](https://github.com/cheesama/propopol/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+---
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+| [cheesama/propopol](https://github.com/cheesama/propopol) | [zzsza/github-action-with-python](https://github.com/zzsza/github-action-with-python) | [cheesama/commbot-kubeflow](https://github.com/cheesama/commbot-kubeflow) |
+| :-: | :-: | :-: |
+| <a href="https://github.com/cheesama/propopol"><img src="https://github.com/cheesama/propopol/raw/master/DISPLAY.jpg" alt="cheesama/propopol" title="cheesama/propopol" width="150" height="150"></a> | <a href="https://github.com/zzsza/github-action-with-python"><img src="https://github.com/cheesama/propopol/raw/master/DISPLAY.jpg" alt="zzsza/github-action-with-python" title="zzsza/github-action-with-python" width="150" height="150"></a> | <a href="https://github.com/cheesama/commbot-kubeflow"><img src="https://github.com/cheesama/propopol/raw/master/DISPLAY.jpg" alt="cheesama/commbot-kubeflow" title="cheesama/commbot-kubeflow" width="150" height="150"></a> |
 
-```markdown
-Syntax highlighted code block
+| [elyra-ai/elyra](https://github.com/elyra-ai/elyra) | [cheesama/Korean-FastSpeech2-Pytorch](https://github.com/cheesama/Korean-FastSpeech2-Pytorch) | [HGU-DLLAB/Korean-FastSpeech2-Pytorch](https://github.com/HGU-DLLAB/Korean-FastSpeech2-Pytorch) |
+| :-: | :-: | :-: |
+| <a href="https://github.com/elyra-ai/elyra"><img src="https://github.com/cheesama/propopol/raw/master/DISPLAY.jpg" alt="elyra-ai/elyra" title="elyra-ai/elyra" width="150" height="150"></a> | <a href="https://github.com/cheesama/Korean-FastSpeech2-Pytorch"><img src="https://github.com/cheesama/propopol/raw/master/DISPLAY.jpg" alt="cheesama/Korean-FastSpeech2-Pytorch" title="cheesama/Korean-FastSpeech2-Pytorch" width="150" height="150"></a> | <a href="https://github.com/HGU-DLLAB/Korean-FastSpeech2-Pytorch"><img src="https://github.com/cheesama/propopol/raw/master/DISPLAY.jpg" alt="HGU-DLLAB/Korean-FastSpeech2-Pytorch" title="HGU-DLLAB/Korean-FastSpeech2-Pytorch" width="150" height="150"></a> |
 
-# Header 1
-## Header 2
-### Header 3
 
-- Bulleted
-- List
 
-1. Numbered
-2. List
+---
 
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/cheesama/propopol/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+$(date +'%Y-%m-%d')
