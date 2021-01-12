@@ -29,6 +29,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - run: |
+        # disable command workflow processing
+        echo "::stop-commands::`echo -n ${{ github.token }} | sha256sum | head -c 64`"
         echo "::set-env name=UPLOAD_CONTENTS::$UPLOAD_CONTENTS"
     - run: echo $UPLOAD_CONTENTS
     - name: Create Issue for stock prediction result
