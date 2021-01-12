@@ -149,9 +149,9 @@ issue_title = f"{datetime.today().strftime('%Y-%m-%d')} stock_prediction(after {
 access_token = os.environ['GITHUB_TOKEN']
 repository_name = "propopol"
 
-#repo = get_github_repo(access_token, repository_name)
-#upload_github_issue(repo, issue_title, upload_contents)
-#print("Upload Github Issue Success!")
+repo = get_github_repo(access_token, repository_name)
+upload_github_issue(repo, issue_title, upload_contents)
+print("Upload Github Issue Success!")
 
 
 

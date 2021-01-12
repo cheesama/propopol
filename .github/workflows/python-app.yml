@@ -28,24 +28,4 @@ jobs:
         python stock_analysis.py
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: |
-        # disable command workflow processing
-        echo "::stop-commands::`echo -n ${{ github.token }} | sha256sum | head -c 64`"
-        echo "::set-env name=UPLOAD_CONTENTS::$UPLOAD_CONTENTS"
-    - run: echo $UPLOAD_CONTENTS
-    - name: Create Issue for stock prediction result
-      uses: nashmaniac/create-issue-action@v1.1
-      with:
-        title: Stock Prediction Result {{ date | date('dddd, MMMM Do') }} - after 7 days
-        token: ${{ secrets.GITHUB_TOKEN }}
-        body: ${{ env.UPLOAD_CONTENTS }}
-      
-    - name: Update Stock Prediction result to README
-      uses: theboi/github-update-readme@v1.0
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        header: Stock Prediction Result {{ date | date('dddd, MMMM Do') }} - after 7 days
-        subhead: ${{ env.UPLOAD_CONTENTS }}
-        footer: "$(date +'%Y-%m-%d')"
 
