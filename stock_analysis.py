@@ -144,7 +144,7 @@ for i, (k, v) in enumerate(predictions.items()):
     if i > top_k:
         break
     print(f"corp: {k}\tcurrent_price:{prediction_infos[k]['current_price']}\tprediction_price:{prediction_infos[k]['prediction_price']}\texpected_profit: {prediction_infos[k]['expected_profit']}\n")
-    upload_contents += f"corp: {k}, \t expected profit: {v}\n"
+    upload_contents += f"corp: {k}\tcurrent_price:{prediction_infos[k]['current_price']}\tprediction_price:{prediction_infos[k]['prediction_price']}\texpected_profit: {prediction_infos[k]['expected_profit']}\n"
 os.environ["UPLOAD_CONTENTS"] = upload_contents
 
 #generate result as github issue
