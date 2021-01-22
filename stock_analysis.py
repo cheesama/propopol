@@ -91,14 +91,15 @@ print("Number of cpu : ", multiprocessing.cpu_count())
 pool = Pool(multiprocessing.cpu_count())
 # pool = Pool(1)
 
-# save all prediction result -> { file_name: prediction_low_bound - actual final close price}
+# save all prediction result -> { code: prediction_low_bound - actual final close price}
 predictions = {}
+prediction_infos = {}
 
 import plotly.offline as py
 import plotly
 
 #prediction args
-start = datetime(2018, 1, 1)
+start = datetime(2017, 1, 1)
 end = datetime.date(datetime.now())
 periods = 7
 top_k = 10
@@ -122,25 +123,27 @@ for i in tqdm(range(len(code_df))):
         
         #fig = plot_plotly(m, forecast, xlabel=name + "(" + code + ")", figsize=(1200, 600))  # This returns a plotly Figure
         #fig.write_image(target_folder + os.sep + name + "(" + code + ").png")
-        predictions[target_folder + os.sep + name + "(" + code + ").png"] = (forecast.iloc[-1]["yhat_lower"] - df.iloc[-1]["y"])
+        predictions[code] = forecast.iloc[-1]["yhat_lower"] - df.iloc[-1]["y"]
+        prediction_infos[code] = {}
+        prediction_infos[code]['current_price'] = df.iloc[-1]["y"]
+        prediction_infos[code]['prediction_price']= forecast.iloc[-1]["yhat_lower"]
+        prediction_infos[code]['expected_profit'] = forecast.iloc[-1]["yhat_lower"] - df.iloc[-1]["y"]
 
-        print(f"\n{name}({code}).png saved!\tvalue : {forecast.iloc[-1]['yhat_lower'] - df.iloc[-1]['y']}")
+        print(f"\n{name}({code}) prediction finished!\texpected_profit : {forecast.iloc[-1]['yhat_lower'] - df.iloc[-1]['y']}")
 
     except Exception as ex:
         print (ex)
         pass
 
 # pick several positive corp prediction results
-predictions = {
-    k: v for k, v in sorted(predictions.items(), key=lambda item: item[1], reverse=True)
-}
+predictions = {k: v for k, v in sorted(predictions.items(), key=lambda item: item[1], reverse=True)}
 
 # print top-k results
 upload_contents = f"{datetime.today().strftime('%Y-%m-%d')} stock_prediction(after {periods} days)\n\n"
 for i, (k, v) in enumerate(predictions.items()):
     if i > top_k:
         break
-    print(f"corp: {k}, \t expected profit: {v}\n")
+    print(f"corp: {k}\tcurrent_price:{prediction_infos[k]['current_price']}\tprediction_price:{prediction_infos[k]['prediction_price']}\texpected_profit: {prediction_infos[k]['expected_profit']}\n")
     upload_contents += f"corp: {k}, \t expected profit: {v}\n"
 os.environ["UPLOAD_CONTENTS"] = upload_contents
 
