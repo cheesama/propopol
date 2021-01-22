@@ -123,11 +123,11 @@ for i in tqdm(range(len(code_df))):
         
         #fig = plot_plotly(m, forecast, xlabel=name + "(" + code + ")", figsize=(1200, 600))  # This returns a plotly Figure
         #fig.write_image(target_folder + os.sep + name + "(" + code + ").png")
-        predictions[code] = forecast.iloc[-1]["yhat_lower"] - df.iloc[-1]["y"]
-        prediction_infos[code] = {}
-        prediction_infos[code]['current_price'] = df.iloc[-1]["y"]
-        prediction_infos[code]['prediction_price']= forecast.iloc[-1]["yhat_lower"]
-        prediction_infos[code]['expected_profit'] = forecast.iloc[-1]["yhat_lower"] - df.iloc[-1]["y"]
+        predictions[f'{name}({code})'] = forecast.iloc[-1]["yhat_lower"] - df.iloc[-1]["y"]
+        prediction_infos[f'{name}({code})'] = {}
+        prediction_infos[f'{name}({code})']['current_price'] = df.iloc[-1]["y"]
+        prediction_infos[f'{name}({code})']['prediction_price']= forecast.iloc[-1]["yhat_lower"]
+        prediction_infos[f'{name}({code})']['expected_profit'] = forecast.iloc[-1]["yhat_lower"] - df.iloc[-1]["y"]
 
         print(f"\n{name}({code}) prediction finished!\texpected_profit : {forecast.iloc[-1]['yhat_lower'] - df.iloc[-1]['y']}")
 
