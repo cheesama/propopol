@@ -141,7 +141,7 @@ predictions = {k: v for k, v in sorted(predictions.items(), key=lambda item: ite
 upload_contents = f"# {datetime.today().strftime('%Y-%m-%d')} stock_prediction(after {periods} days)\n\n"
 
 # markdown table format set
-upload_contents = f"|   corp   |   current_price   |   prediction_price   |   expected_profit   |\n"
+upload_contents += f"|   corp   |   current_price   |   prediction_price   |   expected_profit   |\n"
 upload_contents += f"|:--------:|:-----------------:|:--------------------:|:-------------------:|\n"
 
 for i, (k, v) in enumerate(predictions.items()):
