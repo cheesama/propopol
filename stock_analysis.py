@@ -142,7 +142,7 @@ upload_contents = f"# {datetime.today().strftime('%Y-%m-%d')} stock_prediction(a
 
 # markdown table format set
 upload_contents = f"|   corp   |   current_price   |   prediction_price   |   expected_profit   |\n"
-upload_contents = f"|:--------:|:-----------------:|:--------------------:|:-------------------:|\n"
+upload_contents += f"|:--------:|:-----------------:|:--------------------:|:-------------------:|\n"
 
 for i, (k, v) in enumerate(predictions.items()):
     if i > top_k:
