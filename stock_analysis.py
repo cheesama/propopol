@@ -2,6 +2,7 @@
 from tqdm import tqdm, notebook
 from datetime import datetime, date
 from fbprophet import Prophet
+from fastquant import backtest, get_stock_data
 from github import Github
 
 import pandas as pd
@@ -78,8 +79,6 @@ code_df = code_df[["회사명", "종목코드"]]
 # data frame title 변경 '회사명' = name, 종목코드 = 'code'
 code_df = code_df.rename(columns={"회사명": "name", "종목코드": "code"})
 
-import os, sys
-
 target_folder = datetime.now().strftime("%Y_%m_%d") + "_stock_analysis"
 os.makedirs(datetime.now().strftime("%Y_%m_%d") + "_stock_analysis", exist_ok=True)
 
@@ -139,12 +138,19 @@ for i in tqdm(range(len(code_df))):
 predictions = {k: v for k, v in sorted(predictions.items(), key=lambda item: item[1], reverse=True)}
 
 # print top-k results
-upload_contents = f"{datetime.today().strftime('%Y-%m-%d')} stock_prediction(after {periods} days)\n\n"
+upload_contents = f"# {datetime.today().strftime('%Y-%m-%d')} stock_prediction(after {periods} days)\n\n"
+
+# markdown table format set
+upload_contents = f"|   corp   |   current_price   |   prediction_price   |   expected_profit   |\n"
+upload_contents = f"|:--------:|:-----------------:|:--------------------:|:-------------------:|\n"
+
 for i, (k, v) in enumerate(predictions.items()):
     if i > top_k:
         break
     print(f"corp: {k}\tcurrent_price:{prediction_infos[k]['current_price']}\tprediction_price:{prediction_infos[k]['prediction_price']}\texpected_profit: {prediction_infos[k]['expected_profit']}\n")
-    upload_contents += f"corp: {k}\tcurrent_price:{prediction_infos[k]['current_price']}\tprediction_price:{prediction_infos[k]['prediction_price']}\texpected_profit: {prediction_infos[k]['expected_profit']}\n"
+    #upload_contents += f"corp: {k}\tcurrent_price:{prediction_infos[k]['current_price']}\tprediction_price:{prediction_infos[k]['prediction_price']}\texpected_profit: {prediction_infos[k]['expected_profit']}\n"
+    upload_contents += f"|{k}|{prediction_infos[k]['current_price']}|{prediction_infos[k]['prediction_price']}|{prediction_infos[k]['expected_profit']}|\n"
+
 os.environ["UPLOAD_CONTENTS"] = upload_contents
 
 #generate result as github issue
