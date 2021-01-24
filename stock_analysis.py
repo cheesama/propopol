@@ -162,5 +162,8 @@ repo = get_github_repo(access_token, repository_name)
 upload_github_issue(repo, issue_title, upload_contents)
 print("Upload Github Issue Success!")
 
+#update readme for showing latest prediction result
+with open('README.md','w') as readmeFile:
+    readmeFile.write(upload_contents)
 
 
