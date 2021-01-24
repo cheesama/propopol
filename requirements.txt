@@ -4,4 +4,6 @@ backtrader
 tqdm
 kaleido
 PyGithub
+fastquant
+
 plotly>=4.9.0
