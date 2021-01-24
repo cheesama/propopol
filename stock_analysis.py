@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from tqdm import tqdm, notebook
+from tqdm import tqdm
 from datetime import datetime, date
 from fbprophet import Prophet
 from fastquant import backtest, get_stock_data
