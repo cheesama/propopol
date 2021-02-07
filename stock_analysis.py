@@ -61,7 +61,7 @@ top_k = 10
 
 #model training
 for corp_name in list(entire_df.name.unique()):
-    df = entire_df[entire_df['name']==corp_name]
+    df = entire_df[(entire_df['name']==corp_name) & (entire_df['Market']=='KOSPI')]
 
     #print (df)
     df["ds"] = df.index
