@@ -62,13 +62,12 @@ top_k = 10
 #model training
 for corp_name in list(entire_df.name.unique()):
     df = entire_df[(entire_df['name']==corp_name) & (entire_df['Market']=='KOSPI')]
-
-    #print (df)
     df["ds"] = df.index
-    name = df.iloc[0]["name"]
-    code = df.iloc[0]["code"]
 
     try:
+        name = df.iloc[0]["name"]
+        code = df.iloc[0]["code"]
+
         m = Prophet(daily_seasonality=True, yearly_seasonality=True)
         m.fit(df)
         future = m.make_future_dataframe(periods=periods)
