@@ -9,6 +9,7 @@ from download_stock_data import get_all_stock_data
 
 import pandas as pd
 import os, sys
+import time
 
 def get_github_repo(access_token, repository_name):
     """
@@ -56,13 +57,23 @@ import plotly.offline as py
 import plotly
 
 #prediction args
+min_period = 10
 periods = 7
 top_k = 10
 
 #model training
+start_time = time.time()
+
 for corp_name in list(entire_df.name.unique()):
     df = entire_df[(entire_df['name']==corp_name) & (entire_df['Market']=='KOSPI')]
     df["ds"] = df.index
+
+    #if program runs over 5h, break iteration
+    if (time.time() - start_time) > 3600 * 5:
+        break
+
+    if len(df) < min_period:
+        continue
 
     try:
         name = df.iloc[0]["name"]
