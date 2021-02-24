@@ -79,7 +79,10 @@ for corp_name in list(entire_df.name.unique()):
         name = df.iloc[0]["name"]
         code = df.iloc[0]["code"]
 
-        if '1신' in name or '1우' in name: #just focus common stock
+        #just focus common stock
+        if '1신' in name or '1우' in name: 
+            continue
+        if name[-1] == '우':
             continue
 
         m = Prophet(daily_seasonality=True, yearly_seasonality=True)
