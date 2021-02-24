@@ -79,6 +79,9 @@ for corp_name in list(entire_df.name.unique()):
         name = df.iloc[0]["name"]
         code = df.iloc[0]["code"]
 
+        if '1신' in name or '1우' in name: #just focus common stock
+            continue
+
         m = Prophet(daily_seasonality=True, yearly_seasonality=True)
         m.fit(df)
         future = m.make_future_dataframe(periods=periods)
