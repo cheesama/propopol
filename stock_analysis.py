@@ -80,7 +80,7 @@ for corp_name in list(entire_df.name.unique()):
         code = df.iloc[0]["code"]
 
         #just focus common stock
-        if '1신' in name or '1우' in name: 
+        if '1신' in name or '1우' in name or '2신' in name: 
             continue
         if name[-1] == '우':
             continue
