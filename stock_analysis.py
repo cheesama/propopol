@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from tqdm import tqdm
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 from fbprophet import Prophet
 from fastquant import backtest
 from github import Github
@@ -57,7 +57,7 @@ import plotly.offline as py
 import plotly
 
 #prediction args
-min_period = 10
+min_period = 128
 periods = 7
 top_k = 10
 
@@ -73,6 +73,10 @@ for corp_name in list(entire_df.name.unique()):
         break
 
     if len(df) < min_period:
+        continue
+
+    last_date = (datetime.now()-timedelta(7)).strftime("%Y-%m-%d")
+    if df["ds"][-1] < last_date:
         continue
 
     try:
