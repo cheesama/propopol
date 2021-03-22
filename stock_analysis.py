@@ -75,7 +75,8 @@ for corp_name in list(entire_df.name.unique()):
     if len(df) < min_period:
         continue
 
-    last_date = (datetime.now()-timedelta(7)).strftime("%Y-%m-%d")
+    #last_date = (datetime.now()-timedelta(7)).strftime("%Y-%m-%d")
+    last_date = (datetime.now()-timedelta(7))
     if df["ds"][-1] < last_date:
         continue
 
