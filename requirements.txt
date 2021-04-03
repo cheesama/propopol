@@ -1,3 +1,4 @@
+pystan
 fbprophet
 pandas-datareader
 backtrader
