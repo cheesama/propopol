@@ -21,7 +21,7 @@ jobs:
         python-version: 3.7
     - name: Install dependencies
       run: |
-        pip3 install --upgrade pip && pip3 install pystan
+        pip3 install --upgrade pip && pip3 install "pystan<3"
         if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
     - name: Stock Analysis & update readme for showing prediction result
       run: |
