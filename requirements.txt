@@ -6,5 +6,6 @@ kaleido
 PyGithub
 fastquant
 tqdm
+requests
 
 plotly>=4.9.0

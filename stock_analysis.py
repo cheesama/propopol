@@ -10,6 +10,7 @@ from download_stock_data import get_all_stock_data
 import pandas as pd
 import os, sys
 import time
+import requests
 
 def get_github_repo(access_token, repository_name):
     """
@@ -58,7 +59,7 @@ import plotly
 
 #prediction args
 min_period = 128
-periods = 7
+periods = 14
 top_k = 10
 
 #model training
@@ -107,7 +108,6 @@ for corp_name in list(entire_df.name.unique()):
 
     except Exception as ex:
         print (ex)
-        pass
 
 # pick several positive corp prediction results
 predictions = {k: v for k, v in sorted(predictions.items(), key=lambda item: item[1], reverse=True)}
@@ -120,7 +120,7 @@ upload_contents += f"|   corp   |   current_price   |   prediction_price   |   e
 upload_contents += f"|:--------:|:-----------------:|:--------------------:|:-------------------:|\n"
 
 for i, (k, v) in enumerate(predictions.items()):
-    if i > top_k:
+    i > eop_k:
         break
     print(f"corp: {k}\tcurrent_price:{prediction_infos[k]['current_price']}\tprediction_price:{prediction_infos[k]['prediction_price']}\texpected_profit: {prediction_infos[k]['expected_profit']}\n")
     #upload_contents += f"corp: {k}\tcurrent_price:{prediction_infos[k]['current_price']}\tprediction_price:{prediction_infos[k]['prediction_price']}\texpected_profit: {prediction_infos[k]['expected_profit']}\n"
@@ -140,5 +140,12 @@ print("Upload Github Issue Success!")
 #update readme for showing latest prediction result
 with open('README.md','w') as readmeFile:
     readmeFile.write(upload_contents)
+
+#send result as slack webhook
+webhook_url = os.environ['WEBHOOK_URL']
+webhook_payload = {'text':'Propopol Stock Predictor', 'blocks':[]}
+info_section = {'type':'section', 'text': {'type':'mrkdwn','text':f"{upload_contents}"}}
+webhook_payload['blocks'].append(info_section)
+requests.post(url=webhook_url, json=webhook_payload)
 
 
