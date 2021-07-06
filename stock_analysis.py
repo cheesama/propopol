@@ -5,7 +5,7 @@ from fbprophet import Prophet
 from fastquant import backtest
 from github import Github
 
-from download_stock_data import get_all_stock_data
+from marcap import marcap_data
 
 import pandas as pd
 import os, sys
@@ -36,7 +36,7 @@ def upload_github_issue(repo, title, body):
     repo.create_issue(title=title, body=body)
 
 
-entire_df = get_all_stock_data()
+entire_df = marcap_data('2000-01-01', datetime.today().strftime('%Y-%m-%d'))
 
 # data frame title 변경 '회사명' = name, 종목코드 = 'code'
 entire_df = entire_df.rename(columns={"Name": "name", "Code": "code", "Close": "y"})

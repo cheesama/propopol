@@ -25,6 +25,7 @@ jobs:
         if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
     - name: Stock Analysis & update readme for showing prediction result
       run: |
+        git clone "https://github.com/FinanceData/marcap.git" marcap
         python stock_analysis.py
         git diff
         git config --global user.email "cheehoon12@hanmail.net"
