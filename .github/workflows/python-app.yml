@@ -34,4 +34,5 @@ jobs:
         git push
       env:
         FULL_ACCESS_TOKEN: ${{ secrets.FULL_ACCESS_TOKEN }}
+        WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
 
