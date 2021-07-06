@@ -120,7 +120,7 @@ upload_contents += f"|   corp   |   current_price   |   prediction_price   |   e
 upload_contents += f"|:--------:|:-----------------:|:--------------------:|:-------------------:|\n"
 
 for i, (k, v) in enumerate(predictions.items()):
-    i > eop_k:
+    i > top_k:
         break
     print(f"corp: {k}\tcurrent_price:{prediction_infos[k]['current_price']}\tprediction_price:{prediction_infos[k]['prediction_price']}\texpected_profit: {prediction_infos[k]['expected_profit']}\n")
     #upload_contents += f"corp: {k}\tcurrent_price:{prediction_infos[k]['current_price']}\tprediction_price:{prediction_infos[k]['prediction_price']}\texpected_profit: {prediction_infos[k]['expected_profit']}\n"
