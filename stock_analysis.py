@@ -162,9 +162,9 @@ with open("README.md", "w") as readmeFile:
 # send result as slack webhook
 webhook_url = os.environ["WEBHOOK_URL"]
 webhook_payload = {"text": "Propopol Stock Predictor", "blocks": []}
-for content in upload_contents.split("\n"):
-    info_section = {"type": "section", "text": {"type": "mrkdwn", "text": f"{content}"}}
-    webhook_payload["blocks"].append(info_section)
-    webhook_payload["blocks"].append({"type": "divider"})
+#for content in upload_contents.split("\n"):
+info_section = {"type": "section", "text": {"type": "mrkdwn", "text": f"{upload_contents}"}}
+webhook_payload["blocks"].append(info_section)
+#    webhook_payload["blocks"].append({"type": "divider"})
 
 requests.post(url=webhook_url, json=webhook_payload)
