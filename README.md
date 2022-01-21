@@ -1,4 +1,4 @@
-# 2022-01-20 stock_prediction(after 14 days)
+# 2022-01-21 stock_prediction(after 14 days)
 
 |   corp   |   current_price   |   prediction_price   |   expected_profit   |
 |:--------:|:-----------------:|:--------------------:|:-------------------:|
